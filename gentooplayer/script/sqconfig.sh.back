@@ -1,0 +1,533 @@
+#!/bin/bash
+
+#############################################################################
+#Easy Audio Setup: semi-automated installation and configuration of
+# LMS+Squeezelite audio systems on Debian GNU/Linux OS.
+#
+# Copyright 2015,2016 Paolo 'UnixMan' Saggese <pms@audiofaidate.org>
+# Released under the terms of the GNU General Public License, see:
+# http://www.gnu.org/copyleft/gpl.html
+
+# definizione delle funzioni
+##############################################################################
+
+function fail() {
+  echo -e "\nFatal ERROR: $1\n\nAborted."
+  exit $(false)
+}
+
+##############################################################################
+
+function pausa() {
+  echo
+  read -s -p 'Press "Enter" to continue...'
+  clear
+  echo
+}
+
+##############################################################################
+
+function run_as_root() {
+  [ "$(whoami)" == "root" ] || { 
+    echo -e '\a\nATTENZIONE: questo script deve essere eseguito dal "SuperUser" (utente root).'
+    exec su -c "$0"
+  }
+}
+
+##############################################################################
+
+function setup_workdir() {
+  # setup delThe directory di lavoro
+  myName=$(basename "$0")
+  myWorkdir="/var/tmp/$myName.$(date '+%F.%H-%M-%S')"
+  [ ! -e "$myWorkdir" ] && mkdir "$myWorkdir"
+  cd "$myWorkdir" || fail "impossibile accedere alThe directory di lavoro: $myWorkdir"
+}
+
+function run_alsamixer() {
+  # esegue alsamixer per la verifica delle impostazioni
+  clear
+  echo
+  cat <<-EOAMIX | less
+	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo. 
+	Premete il tasto "q" per uscire da questo visualizzatore).
+
+	Verrà ora avviato "alsamixer", una interfaccia al "mixer" di ALSA.
+	
+	Verificate che le impostazioni del dispositivo di uscita audio siano
+	corrette; in modo particolare controllate che i volumi non siano posti
+	a zero e che la/e uscita/e non siano in mute (non deve essere presente 
+	una "M" sotto la barra del volume). Utilizzate:
+	
+	* il tasto "F6" per scegliere il dispositivo di uscita su cui agire
+	 (quello che avete scelto è preselezionato);
+	
+	* i tasti "freccia" destra/sinistra per spostarvi tra i cursorsi;
+	
+	* i tasti "freccia" su/giù per cambiare il valore dei cursori;
+	
+	* il tasto 'm' per attivare/disattivare il "mute";
+	
+	* il tasto "Esc" per uscire da alsamixer.
+	
+	EOAMIX
+  alsamixer $(test -v myCDev && echo "-c $myCard")
+}
+function select_outupt_dev() {
+  # verifica della disponibilità e selezione del dispositivo di uscita
+  myCard=""
+  while [ "$myCard" == "" ]
+  do
+    clear
+    IFS=$'\n'
+    outDev=($(aplay -l |awk '/^card / { print $0 }') "My device is not in the list")
+    unset IFS
+    maxCardNum=$[ ${#outDev[@]}-1 ]
+    if [ $maxCardNum -le 0 ]
+    then
+      echo -e '\n\a\nTTENTION: the system has not recognized any audio interface!\n'
+      pausa
+      myCard=-1 # fake
+    else
+      echo -e '\nList of audio output devices recognized by the system;\nselect the output device that you intend to use:\n'
+      for (( i = 0 ; i < ${#outDev[@]} ; i++ ))
+      do
+	echo -e "$i) \t${outDev[$i]}";
+      done
+      echo
+      read -p 'Type the corresponding number and press enter: ' SceltaDispositivo
+      echo
+      if [[ "$SceltaDispositivo" =~ ^[0-9]+$ ]] && [ "$SceltaDispositivo" -lt $maxCardNum ]
+      then
+	myCard=$(echo "${outDev[$SceltaDispositivo]}" |sed -r 's/card\s+([0-9]+).*/\1/')
+	myCDev=$(echo "${outDev[$SceltaDispositivo]}" |sed -r 's/.*device\s+([0-9]+).*/\1/')
+	echo -e "Choice made: '$(echo ${outDev[$SceltaDispositivo]})' (hw:$myCard,$myCDev)\n"
+	read -s -N1 -p 'Confirm and proceed? (s/N)'
+	if [ "$REPLY" == "s" ]
+	then
+	  myCardName=$(cat /proc/asound/card$myCard/id)
+	  myOutputDev="hw:CARD=$myCardName,DEV=$myCDev"
+	  #test_output_dev || myCard=""
+	else
+	  myCard=""
+	fi
+      elif [[ "$SceltaDispositivo" =~ ^[0-9]+$ ]] && [ "$SceltaDispositivo" -eq $maxCardNum ]
+      then
+	myCard=-1
+      else
+	echo -e "\a\nErrore: type a number between 0 and $maxCardNum."
+	pausa
+      fi
+    fi
+    if [ $myCard != "" ] && [ $myCard -lt 0 ]
+    then
+      cat <<-AUDIOHWM | less
+	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo.
+	Premete il tasto "q" per uscire da questo visualizzatore).
+	
+	Se il dispositivo di uscita audio che volete utilizzare non è stato
+	riconosciuto dal sistema, per prima cosa verificate che sia acceso e
+	sia collegato correttamente.
+
+	ATTENZIONE: alcuni dispositivi possono richiedere che venga seguita una
+	precisa sequenza di accensione e/o di collegamento. Se questa non viene
+	rispettata l'interfaccia potrebbe non funzionare correttamente e/o non
+	essere riconosciuta affatto dal sistema.
+	
+	Purtroppo tale (eventuale) sequenza cambia da un dispositivo all'altro:
+	non esiste una regola generale valida per tutti.
+	Ad es. alcuni dispositivi devono essere accesi prima di essere collegati
+	al computer, mentre per altri è vero il contrario - devono essere accesi
+	solo dopo che sono stati collegati.
+	È Inoltre possibile che in alcuni casi il dispositivo debba essere acceso
+	e/o collegato solo dopo che il sistema ha completato la sequenza di avvio,
+	mentre in altri può essere vero il contrario (il dispositivo deve essere
+	collegato ed acceso prima dell'avvio, a computer spento), ecc.
+	
+	Si consiglia di effettuare subito tutte le verifiche necessarie; qualora
+	sia necessario riavviare il sistema, una volta completata la sequenza di
+	avvio dovrete riavviare manualmente questo script per poter completare la
+	configurazione.
+
+	Se nonostante tutto il vostro dispositivo non dovesse essere riconosciuto,
+	è possibile che non sia supportato dal kernel in esecuzione.
+	
+	In alcuni casi il problema può essere risolto banalmente utilizzando una
+	versione più recente del kernel, che contiene driver ALSA più aggiornati:
+	provate quindi a riavviare il sistema con un kernel più recente, quindi
+	avviate nuovamente questo script.
+	
+	In altri casi potrebbe essere necessario installare dei "driver" (moduli
+	del kernel) aggiuntivi, non inclusi direttamente nel kernel ma forniti
+	separatamente dal produttore dell'hardware o da terze parti.
+	In tal caso purtroppo non è possibile gestire la cosa in modo automatico
+	e dovrete quindi intervenire manualmente.
+	Ciò fatto potrete però eseguire nuovamente questo script per completare
+	la configurazione.
+	
+	Infine esistono purtroppo alcuni dispositivi che, per scelta dei loro
+	stessi produttori, non sono e non possono essere supportati da sistemi
+	diversi da quelli previsti (di solito determinate versioni di Windows
+	e/o di MacOS). In tal caso c'è ben poco da fare... se non liberarvene
+	e sostituirli con altri che funzionino bene con Linux.
+
+	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo. Premete
+	il tasto "q" per uscire da questo visualizzatore).
+	
+	AUDIOHWM
+    clear
+    echo
+    read -s -N1 -p 'Check again if the interface has been recognized? (S/n)'
+    echo
+    if [ "$REPLY" != "n" ]; then
+      myCard=""
+    else
+      cat <<-AUDIOHW3
+	
+	Potete scegliere se procedere con l´installazione del solo setup di base,
+	quindi riavviare il sistema ed avviare nuovamente lo script per ritentare
+	il riconoscimento del dispositivo di uscita audio con il nuovo kernel o
+	terminare qui la procedura automatica.
+
+	AUDIOHW3
+      read -s -N1 -p 'Proceed with the installation of the basic setup only? (s/N)'
+      echo
+      if [ "$REPLY" == "s" ]; then
+	TipoSistema="custom"
+      else
+	echo -e '\nAbortive procedure as required. Bye.\n'
+	exit 1
+      fi
+    fi
+  fi
+  done
+}
+
+function select_sample_rate() {
+  declare -a rates=(	\
+	'44100'		\
+	'48000'		\
+	'88200'		\
+	'96000'		\
+	'176400'	\
+	'192000'	\
+	'352800'	\
+	'384000'	\
+  )
+  # no existing hardware support for '705600' and '768000'.
+  if [ "$1" == "" ]; then 
+    local prompt='Select a sample rate:'
+  else
+    local prompt="$1"
+  fi
+  sample_rate=""
+  while [ "$sample_rate" == "" ]
+  do
+    clear
+    echo -e "\n$prompt\n"
+    for (( i = 0 ; i < ${#rates[@]} ; i++ ))
+    do
+      echo -e "$i) \t${rates[$i]}";
+    done
+    echo
+    read -p 'Type the corresponding number and press enter: ' choice
+    echo
+    if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -lt ${#rates[@]} ]; then
+      sample_rate="${rates[$choice]}"
+      echo -e "Choice made: '$sample_rate'\n"
+      read -s -N1 -p 'Confirm and proceed? (s/N)'
+      clear
+      echo
+      [ "$REPLY" != "s" ] && sample_rate=""
+    else
+      echo -e "\a\nErrore: type a number between 0 and $[ ${#rates[@]}-1 ]."
+      pausa
+    fi
+  done
+}
+function select_buffer() {
+  declare -a ram=(	\
+	'262144'		\
+	'524888'		\
+	'1048576'		\
+	)
+if [ "$1" == "" ]; then 
+    local prompt='Impostazione buffer, selezionare in base alla quantitá di RAM presente sul sistema, 0-1GB, 1-2GB, 2-4GB:'
+  else
+    local prompt="$1"
+  fi
+  buffer=""
+  while [ "$buffer" == "" ]
+  do
+    clear
+    echo -e "\n$prompt\n"
+    for (( i = 0 ; i < ${#ram[@]} ; i++ ))
+    do
+      echo -e "$i) \t${ram[$i]}";
+    done
+    echo
+    read -p 'Type the corresponding number and press enter: ' choice
+    echo
+    if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -lt ${#ram[@]} ]; then
+      buffer="${ram[$choice]}"
+      echo -e "Choice made: '$buffer'\n"
+      read -s -N1 -p 'Confirm and proceed? (s/N)'
+      clear
+      echo
+      [ "$REPLY" != "s" ] && buffer=""
+    else
+      echo -e "\a\nErrore: type a number between 0 and $[ ${#ram[@]}-1 ]."
+      pausa
+    fi
+  done
+}
+
+function select_sample_rate_range() {
+  # selezione dei sample-rate supportati dal dispositivo di uscita
+  #
+  ratesRange=""
+  while [ "$ratesRange" == "" ]
+  do
+  clear
+  cat <<-EOSRR | less
+  
+	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo. 
+	Premete il tasto "q" per uscire da questo visualizzatore).
+	
+	Si dovrà ora procedere a selezionare le frequenze di campionamento dei
+	flussi audio digitali ("sample-rate") che sono direttamente supportate
+	dal vostro dispositivo di uscita audio.
+	
+	Vanno indicati i limiti effettivi del sistema nel suo complesso: qualora
+	si utilizzi un sistema composto da interfaccia+DAC separati, ciascuno con
+	i suoi propri limiti, i valori da indicare sono dati dal sottoinsieme dei
+	sample-rate supportati sia dall'interfaccia che dal DAC.
+	
+	Ad es., se avete una interfaccia USB che supporta tutti i sample-rate a
+	partire da 44.1 fino a 384 kHz, ma il DAC che c'è collegato arriva solo
+	fino a 192 kHz, il limite max da specificare è 192 kHz.
+	Se invece alla stessa interfaccia è collegato un DAC capace di arrivare
+	fino a 768 kHz, il limite sarebbe posto dall'interfaccia. Perciò in tal
+	caso il valore max da specificare sarebbe 384 kHz.
+	
+	Se avete qualche motivo particolare per volerlo fare, nulla vieta di
+	specificare dei limiti più restrittivi rispetto a quelli imposti dal
+	vostro hardware. Ad es., se il vostro sistema è in grado di gestire
+	flussi fino a 384 kHz ma funziona/suona meglio fino a 192 kHz, nulla
+	vieta di impostare tale valore come limite superiore.
+	
+	Ovviamente il contrario non è vero: impostare i limiti a valori che
+	eccedano il massimo e/o siano inferiori al minimo consentito dal vostro
+	hardware è un errore che porta al mancato funzionamento del sistema.
+
+	N.B.: a prescindere dai limiti impostati, il sistema sarà comunque in
+	grado di gestire flussi audio in ingresso con qualsiasi sample rate che
+	sia supportato dal software (LMS e squeezelite). Se questi eccedono i
+	limiti fisici del vostro hardware o comunque quelli impostati qui, il
+	software provvederà automaticamente a ricampionare tali flussi in modo
+	da renderli compatibili (farli rientrare nei limiti).
+	
+	In effetti, un possibile motivo per voler impostare dei limiti più
+	restrittivi rispetto a quanto consentito dall'hardware è proprio quello
+	di "forzare" il ricampionamento dei flussi audio in ingresso.
+	
+	Ad es., se il vostro hardware supporta flussi audio fino a 96 kHz ed
+	impostate proprio tale valore sia come limite inferiore che superiore,
+	il risultato sarà che tutti i flussi in ingresso saranno ricampionati
+	proprio a tale frequenza (verrà effettuato un "upsampling" oppure un
+	"downsampling", a seconda che il flusso in ingresso abbia frequenza
+	di campionamento minore o maggiore di quella richiesta).
+	
+	Un'altra possibilità utilizzata comunemente è quella di impostare il
+	limite inferiore e superiore alle frequenze corrispondenti ai massimi
+	multipli interi supportati dall'hardware delle due frequenze "base",
+	44.1 e 48 kHz, ad es. 176.4 e 192 kHz, oppure 352.8 e 384 kHz, ecc.
+	
+	In questo modo è possibile ottenere un "ricampionamento sincrono" dei
+	flussi in ingresso, cioè far sì che questi vengano sempre ricampionati
+	al massimo multiplo intero (supportato) della loro frequenza base.
+	
+	Se invece volete (per quanto possibile) evitare il ricampionamento
+	(almeno sul "player"), indicate correttamente gli effettivi limiti
+	minimo e massimo imposti dal vostro hardware.
+	
+	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo.
+	Premete il tasto "q" per uscire da questo visualizzatore).
+	
+	EOSRR
+    clear
+    select_sample_rate 'Select the MAXIMUM sampling rate supported:'
+    maxRate=$sample_rate
+    select_sample_rate 'Select the MINIMUM sampling rate supported:'
+    minRate=$sample_rate
+    if [ $maxRate -eq $minRate ]; then
+      ratesRange="$minRate"
+    elif [ $maxRate -lt $minRate ]; then
+      ratesRange="$maxRate-$minRate"
+    else
+      ratesRange="$minRate-$maxRate"
+    fi
+    echo -e "\nSelected sampling frequency range: '$ratesRange'\n"
+    read -s -N1 -p 'Confirm and proceed? (s/N)'
+    clear
+    echo
+    [ "$REPLY" != "s" ] && ratesRange=""
+  done
+}
+run_as_root
+setup_workdir
+run_alsamixer
+select_outupt_dev
+#select_sample_rate
+select_sample_rate_range
+#select_buffer
+
+echo -e "save in the squeezelite-R2 configuration file? y/n"
+read salvare
+    if [ "$salvare" = "y" ]; then
+    cat > /etc/conf.d/squeezelite-R2 <<EOF
+# Copyright 1999-2016 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+# /etc/conf.d/squeezelite-R2: configuration for /etc/init.d/squeezelite-R2
+
+# Switches to pass to Squeezelite-R2. See 'squeezelite-R2 -h' for
+# a description of the possible switches.
+#
+# Example setting the server IP, the ALSA output device, the player name
+# and visualiser support:
+# SL_OPTS="-s 192.168.1.56 -o sysdefault -n $HOSTNAME -v"
+#
+# Example seleting pulse output:
+# export PULSE_SERVER=localhost
+# SL_OPTS="-s 192.168.1.56 -o pulse -n $HOSTNAME -v"
+#for more information on the various configuration options visit http://marcoc1712.it/?page_id=139
+#
+SL_OPTS="-C 1 -D :u32be -o $myOutputDev -r $ratesRange -b 262144:262144 -a 499:3::0 -n GentooPlayer"
+EOF
+     /etc/init.d/squeezelite-R2 restart
+    fi 
+
+
+echo -e "save in the mpd configuration file? y/n"
+read salvare
+    if [ "$salvare" = "y" ]; then
+	cat > /etc/mpd.conf <<EOF
+# An example configuration file for MPD.
+# Read the user manual for documentation: http://www.musicpd.org/doc/user/
+# Files and directories #######################################################
+music_directory			"/var/lib/mpd/music"
+playlist_directory		"/var/lib/mpd/playlists"
+db_file			"/var/lib/mpd/database"
+log_file			"/var/lib/mpd/log"
+pid_file			"/var/lib/mpd/pid"
+state_file			"/var/lib/mpd/state"
+#
+# General music daemon options ################################################
+user				"mpd"
+bind_to_address		"any"
+#
+# Input #######################################################################
+#
+
+input {
+        plugin "curl"
+#       proxy "proxy.isp.com:8080"
+#       proxy_user "user"
+#       proxy_password "password"
+}
+
+#
+###############################################################################
+ follow_outside_symlinks "yes"
+ follow_inside_symlinks "yes"
+
+ zeroconf_enabled "no"
+ zeroconf_name "GentooPlayerMPD"
+
+# Audio Output ################################################################
+#
+audio_output {
+	type "alsa"
+	name "no resample"
+	device "$myOutputDev"
+	format "*:32:2"
+	#priority "RR:49"
+	enabled "yes"
+#    use_mmap  "yes"
+#    buffer_time     "2097152"
+#    eriod_time     "524288"
+}
+
+
+# An example of a httpd output (built-in HTTP streaming server):
+#
+audio_output {
+        type             "httpd"
+        name            "cb"
+        encoder       "vorbis"
+        port             "8000"
+        quality         "4"
+        enabled "no"
+#     bitrate         "320"                  
+#     format          "44100:16:2"
+}
+#
+#
+
+audio_output {
+        type "alsa"
+        name "resample"
+        device "$myOutputDev"
+        format "192000:32:2"
+        #priority "RR:49"
+        enabled "no"
+	use_mmap  "yes"
+}
+
+audio_output {
+        type "alsa"
+        name "resample1"
+        device "$myOutputDev"
+        format "192000:32:2"
+        #priority "RR:49"
+        enabled "no"
+}
+
+
+#######################################
+#     MIXER
+
+# mixer_type   "hardware"
+# mixer_type   "software"
+mixer_type   "none"
+
+
+#######################################
+#     BUFFER
+
+ audio_buffer_size  "2048"
+ buffer_before_play  "10%"
+
+#audio_buffer_size  "16384"
+#buffer_before_play  "25%"
+
+#buffer_time     "2097152"
+#period_time     "524288"
+
+#samplerate_converter	"Medium Sinc Interpolator"
+#samplerate_converter            "soxr very high"
+# audio_output_format  "192000:32:2"
+# audio_output_format  "192000:24:2"
+# audio_output_format  "96000:24:2"
+# audio_output_format  "44100:16:2"
+# samplerate_converter  "Best Sinc Interpolator"         #0  (97dB SNR, 96% BW)
+# samplerate_converter  "Medium Sinc Interpolator"   #1  (97dB SNR, 90% BW)
+samplerate_converter  "Fastest Sinc Interpolator"     #2  (97dB SNR, 80% BW)
+# samplerate_converter  "ZOH Interpolator"               #3  (low quality)
+# samplerate_converter  "Linear Interpolator"             #4  (very low quality)
+# samplerate_converter   "internal"
+
+EOF
+/etc/init.d/mpd restart
+fi

@@ -1,0 +1,592 @@
+# /etc/bash/bashrc
+#
+# This file is sourced by all *interactive* bash shells on startup,
+# including some apparently interactive shells such as scp and rcp
+# that can't tolerate any output.  So make sure this doesn't display
+# anything or bad things will happen !
+
+
+# Test for an interactive shell.  There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+if [[ $- != *i* ]] ; then
+	# Shell is non-interactive.  Be done now!
+	return
+fi
+
+# Bash won't get SIGWINCH if another process is in the foreground.
+# Enable checkwinsize so that bash will check the terminal size when
+# it regains control.  #65623
+# http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
+shopt -s checkwinsize
+
+# Disable completion when the input buffer is empty.  i.e. Hitting tab
+# and waiting a long time for bash to expand all of $PATH.
+shopt -s no_empty_cmd_completion
+
+# Enable history appending instead of overwriting when exiting.  #139609
+shopt -s histappend
+
+# Save each command to the history file as it's executed.  #517342
+# This does mean sessions get interleaved when reading later on, but this
+# way the history is always up to date.  History is not synced across live
+# sessions though; that is what `history -n` does.
+# Disabled by default due to concerns related to system recovery when $HOME
+# is under duress, or lives somewhere flaky (like NFS).  Constantly syncing
+# the history will halt the shell prompt until it's finished.
+#PROMPT_COMMAND='history -a'
+
+# Change the window title of X terminals
+case ${TERM} in
+	[aEkx]term*|rxvt*|gnome*|konsole*|interix)
+		PS1='\[\033]0;\u@\h:\w\007\]'
+		;;
+	screen*)
+		PS1='\[\033k\u@\h:\w\033\\\]'
+		;;
+	*)
+		unset PS1
+		;;
+esac
+
+# Set colorful PS1 only on colorful terminals.
+# dircolors --print-database uses its own built-in database
+# instead of using /etc/DIR_COLORS.  Try to use the external file
+# first to take advantage of user additions.
+# We run dircolors directly due to its changes in file syntax and
+# terminal name patching.
+use_color=false
+if type -P dircolors >/dev/null ; then
+	# Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
+	LS_COLORS=
+	if [[ -f ~/.dir_colors ]] ; then
+		eval "$(dircolors -b ~/.dir_colors)"
+	elif [[ -f /etc/DIR_COLORS ]] ; then
+		eval "$(dircolors -b /etc/DIR_COLORS)"
+	else
+		eval "$(dircolors -b)"
+	fi
+	# Note: We always evaluate the LS_COLORS setting even when it's the
+	# default.  If it isn't set, then `ls` will only colorize by default
+	# based on file attributes and ignore extensions (even the compiled
+	# in defaults of dircolors). #583814
+	if [[ -n ${LS_COLORS:+set} ]] ; then
+		use_color=true
+	else
+		# Delete it if it's empty as it's useless in that case.
+		unset LS_COLORS
+	fi
+else
+	# Some systems (e.g. BSD & embedded) don't typically come with
+	# dircolors so we need to hardcode some terminals in here.
+	case ${TERM} in
+	[aEkx]term*|rxvt*|gnome*|konsole*|screen|cons25|*color) use_color=true;;
+	esac
+fi
+
+if ${use_color} ; then
+	if [[ ${EUID} == 0 ]] ; then
+		PS1+='\[\033[01;31m\]\h\[\033[01;34m\] \w \$\[\033[00m\] '
+	else
+		PS1+='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] '
+	fi
+
+	alias ls='ls --color=auto'
+	alias grep='grep --colour=auto'
+	alias egrep='egrep --colour=auto'
+	alias fgrep='fgrep --colour=auto'
+else
+	# show root@ when we don't have colors
+	PS1+='\u@\h \w \$ '
+fi
+
+for sh in /etc/bash/bashrc.d/* ; do
+	[[ -r ${sh} ]] && source "${sh}"
+done
+
+# Try to keep environment pollution down, EPA loves us.
+unset use_color sh
+#######################################################################################################################
+function audio {
+echo "AUDIO CARDS"
+cards_path=$(echo $(find /proc/asound -type d -name "card*") | awk  '{print $NF}' | tail -c 2)
+fw_devices=$(find /sys/devices/ -maxdepth 4 -type d -name "fw*" | wc -l)
+echo -e -n "CARD\tTYPE\t\t\tADDRESS\t\t\tNAME
+--------------------------------------------------------------------------------------------------------
+"
+for (( i=0; i<=$cards_path; i++ )); do
+    if [[ -d  "/proc/asound/card"$i"" ]]; then
+    echo -n "card$i"
+    usbid=$(find "/proc/asound/card"$i -type f -name "usbid" -exec cat {} \; )
+        if [[ -z $usbid ]]; then
+                if [[ -d "/proc/asound/card"$i"/firewire" ]]; then
+                    echo -e -n "\tFirewire Audio card"
+                    for (( j=0; j<$fw_devices; j++ )); do
+                        if [[ $(cat /proc/asound/cards | egrep "fw$j") ]]; then
+                            echo -e -n "\tfw$j"
+                            echo -n "   --> -- "
+                            echo -e -n "\t\t$(find "/proc/asound/card"$i -type f -name "info" -exec cat {} \; | egrep "name" | head -1 | sed 's/name\:\ //g' | awk '{print $1,$2,$3}')"
+                        fi
+                    done
+                else
+                    echo -e -n "\tInternal Audio card"
+                    echo -e -n "\tcard"$i
+                    echo -n " --> -- "
+                    echo -e -n "\t\t$(find "/proc/asound/card"$i -type f -name "info" -exec cat {} \; | egrep "id" | head -1 | sed 's/id\:\ //g' | awk '{print $1,$2,$3}' )"
+                fi
+            else
+                echo -e -n "\tUSB Audio card"
+                echo -e -n "\t\tusb"$(cat "/proc/asound/card"$i"/usbbus" | rev | cut -b5)
+                echo -n "  --> "$usbid
+                echo -e -n "\t$(find "/proc/asound/card"$i -type f -name "usbmixer" -exec cat {} \; | egrep "Card" | head -1 | sed 's/Card\://g' | awk '{print $1,$2,$3}' )"
+            fi
+                 echo ""
+    if [[ -a  "/proc/asound/card"$i"/pcm0p/sub0/hw_params" ]]; then
+        echo -e "card$i\tSTATUS  --> "$(cat /proc/asound/card"$i"/pcm0p/sub0/hw_params)
+    else
+        echo -e "card$i\tSTATUS  --> unavailable"
+    fi
+echo "--------------------------------------------------------------------------------------------------------"
+fi
+done
+}
+############
+function sqc {
+nano /etc/conf.d/squeezelite
+/etc/init.d/squeezelite restart
+}
+###################
+function sqr {
+/etc/init.d/networkaudiod stop
+/etc/init.d/mpd stop
+/etc/init.d/roonbridge stop
+/etc/init.d/roonserver stop
+/etc/init.d/squeezelite-R2 stop
+/etc/init.d/squeezelite restart
+}
+#####################################
+function sqrestart {
+/etc/init.d/squeezelite restart
+}
+##################################
+function sqstop {
+/etc/init.d/squeezelite stop
+}
+##################################
+function sqc2 {
+nano /etc/conf.d/squeezelite-R2
+/etc/init.d/squeezelite-R2 restart
+}
+###################
+function sqr2 {
+/etc/init.d/networkaudiod stop
+/etc/init.d/mpd stop
+/etc/init.d/roonbridge stop
+/etc/init.d/roonserver stop
+/etc/init.d/logitechmediaserver stop
+/etc/init.d/squeezelite stop
+/etc/init.d/squeezelite-R2 restart
+}
+#####################################
+function sqrestart2 {
+/etc/init.d/squeezelite-R2 restart
+}
+##################################
+function sqstop2 {
+/etc/init.d/squeezelite-R2 stop
+}
+##################################
+function mpdc {
+nano /etc/mpd.conf
+/etc/init.d/mpd restart
+}
+###################
+function mpdr {
+/etc/init.d/networkaudiod stop
+/etc/init.d/roonbridge stop
+/etc/init.d/roonserver stop
+/etc/init.d/logitechmediaserver stop
+/etc/init.d/squeezelite-R2 stop
+/etc/init.d/squeezelite stop
+/etc/init.d/mpd restart
+}
+##############################
+function mpdrestart {
+/etc/init.d/mpd restart
+}
+###########################
+function mpdstop {
+/etc/init.d/mpd stop
+}
+##############################
+function nadr {
+/etc/init.d/mpd stop
+/etc/init.d/roonbridge stop
+/etc/init.d/roonserver stop
+/etc/init.d/logitechmediaserver stop
+/etc/init.d/squeezelite-R2 stop
+/etc/init.d/squeezelite stop
+/etc/init.d/networkaudiod restart
+}
+################################
+function nadrestart {
+/etc/init.d/networkaudiod restart
+}
+################################
+function nadstop {
+/etc/init.d/networkaudiod stop
+}
+################################
+function roonr {
+/etc/init.d/mpd stop
+/etc/init.d/roonserver stop
+/etc/init.d/logitechmediaserver stop
+/etc/init.d/squeezelite-R2 stop
+/etc/init.d/squeezelite stop
+/etc/init.d/networkaudiod stop
+/etc/init.d/roonbridge restart
+}
+#################################
+function roonrestart {
+/etc/init.d/roonbridge restart
+}
+################################
+function roonstop {
+/etc/init.d/roonbridge stop
+}
+################################
+function rtirqconf {
+/gentooplayer/script/rtirqconf.sh
+}
+########################
+function ipstatic {
+/gentooplayer/script/ipstatic.sh
+}
+######################
+function sqconfig {
+/gentooplayer/script/sqconfig.sh
+}
+######################
+#function kernelinstall {
+#/gentooplayer/script/kernelinstall.sh
+#}
+################################
+#function grubconf {
+#/gentooplayer/script/grubconf.sh
+#}
+###############################
+#function rtappc {
+#nano /etc/rtapp/rtapp.conf
+#/etc/init.d/rtirq restart
+#rtapp
+#}
+#####################################
+function rtirqc {
+nano /etc/conf.d/rtirq
+/etc/init.d/rtirq restart
+}
+###################################
+function rtirqadd {
+rc-update add rtirq default
+}
+#############################
+function rtirqremove {
+rc-update delete rtirq default
+}
+###############################
+#function rtappadd {
+#rc-update add rtapp-timer default
+#}
+############################
+#function rtappremove {
+#rc-update delete rtapp-timer default
+#}
+#############################
+function mpdadd {
+rc-update add mpd default
+}
+###########################
+function mpdremove {
+rc-update delete mpd default
+}
+#############################
+function sqadd {
+rc-update add squeezelite default
+}
+############################
+function sqadd2 {
+rc-update add squeezelite-R2 default
+}
+############################
+function sqremove {
+rc-update delete squeezelite default
+}
+#################################
+function sqremove2 {
+rc-update delete squeezelite-R2 default
+}
+#################################
+function nadadd {
+rc-update add networkaudiod default
+}
+#################################
+function nadremove {
+rc-update delete networkaudiod default
+}
+#####################################
+#function lmsadd {
+#rc-update add logitechmediaserver default
+#}
+#####################################
+#function lmsremove {
+#rc-update delete logitechmediaserver default
+#}
+##########################################
+#function lmsrestart {
+#/etc/init.d/logitechmediaserver restart
+#}
+#######################################
+#function lmsstop {
+#/etc/init.d/logitechmediaserver stop
+#}
+#######################################
+function roonadd {
+rc-update add roonbridge default
+}
+########################################
+function roonremove {
+rc-update delete roonbridge default
+}
+##########################################
+###########################################
+#function roonsadd {
+#rc-update add roonserver default
+#}
+#########################################
+#function roonsremove {
+#rc-update delete roonserver default
+#}
+######################################
+#function roonsrestart {
+#/etc/init.d/roonserver restart
+#}
+#################################
+#function roonserverstop {
+#/etc/init.d/roonserver stop
+#}
+###################################
+function playerstop {
+/etc/init.d/squeezelite-R2 stop
+etc/init.d/squeezelite stop
+/etc/init.d/mpd stop
+/etc/init.d/networkaudiod stop
+/etc/init.d/roonbridge stop
+}
+#######################################
+#function serverstop {
+#/etc/init.d/logitechmediaserver stop
+#/etc/init.d/roonserver stop
+#}
+###########################################
+#function testsetting {
+#/gentooplayer/script/testsetting.sh
+#}
+###############################
+#function testsetting1 {
+#/gentooplayer/script/testsetting1.sh
+#}
+###############################
+#function normalsetting {
+#/gentooplayer/script/normalsetting.sh
+#}
+###############################
+#function normalsetting1 {
+#/gentooplayer/script/normalsetting1.sh
+#}
+###############################
+#function xfceinstall {
+#/gentooplayer/script/xfceinstall.sh
+#}
+##################################
+#function vncinstall {
+#/gentooplayer/script/vncinstall.sh
+#}
+#################################
+#function ricompila {
+#/gentooplayer/script/ricompila.sh
+#}
+################################
+#function affinity {
+#/gentooplayer/script/affinity.sh
+#}
+################################
+#function prio {
+#/gentooplayer/script/prio.sh
+#}
+################################
+#function nices {
+#/gentooplayer/script/nice.sh
+#}
+################################
+function spegni {
+shutdown -h now
+}
+###############################
+function mountfs {
+/gentooplayer/script/mountfs.sh
+}
+#######################
+#function cmdset {
+#/gentooplayer/script/cmdset.sh
+#}
+#######################
+function swappoff {
+rc-update delete swap boot
+}
+#######################
+#function selectdac {
+#/gentooplayer/script/scelta_dac.sh
+#}
+#######################
+function selectkernel {
+/gentooplayer/script/selectkernel.sh
+}
+######################
+function selectkernel-botic {
+/gentooplayer/script/selectkernel_botic.sh
+}
+######################
+function selectkernel-botic-sabre {
+/gentooplayer/script/selectkernel_botic_sabre32.sh
+}
+#######################
+#function trimadd {
+#/gentooplayer/script/trim.sh
+#}
+#######################
+function home {
+clear
+. /etc/profile
+}
+#######################
+#function leggi {
+#less /gentooplayer/script/avvertenze.txt
+#}
+#######################
+function cpu-info {
+/gentooplayer/DietPi/dietpi/dietpi-cpuinfo
+}
+######################
+function cpu-governor {
+/gentooplayer/script/cpu-governor.sh
+}
+######################
+function cpu-governor-add {
+/gentooplayer/script/cpugovernoradd.sh
+}
+######################
+function cpu-governor-remove {
+/gentooplayer/script/cpugovernoremove.sh
+}
+######################
+function process-tool {
+/gentooplayer/script/process_tool.sh
+}
+######################
+function process-tool-add {
+/gentooplayer/script/processtooladd.sh
+}
+######################
+function process-tool-remove {
+/gentooplayer/script/processtoolremove.sh
+}
+######################
+function irq-affinity {
+/gentooplayer/script/irq-affinity.sh
+}
+######################
+function irqadd {
+/gentooplayer/script/irqadd.sh
+}
+######################
+function irqremove {
+/gentooplayer/script/irqremove.sh
+}
+######################
+function cloudshell {
+/gentooplayer/DietPi/dietpi/dietpi-cloudshell 1
+}
+######################
+function mtu-test {
+/gentooplayer/DietPi/dietpi/func/dietpi-optimal_mtu
+}
+######################
+function comandi-player {
+/gentooplayer/script/comandi-player.sh
+}
+######################
+function comandi-sistema {
+/gentooplayer/script/comandi-sistema.sh
+}
+######################
+function console-disattiva {
+/gentooplayer/script/console.sh
+}
+######################
+function ssh-disattiva {
+rc-update delete sshd default
+}
+#############################
+#function buffer {
+#/gentooplayer/script/buffer.sh
+#}
+#######################
+#function confset {
+#/gentooplayer/script/confset.sh
+#}
+########################
+#function twk {
+#/gentooplayer/script/twk.sh
+#}
+#######################
+function gp-update {
+/gentooplayer/script/gp-update.sh
+}
+######################
+function alsa-up {
+/gentooplayer/script/alsa-up.sh
+}
+######################
+function alsa-dw {
+/gentooplayer/script/alsa-dw.sh
+}
+######################
+
+
+#mini
+clear
+figlet -f big "GentooPlayer"
+tmp=$(uname -r)
+echo -e " \e[38;5;8m$tmp\e[0m"
+/gentooplayer/DietPi/dietpi/func/obtain_network_details
+/gentooplayer/DietPi/dietpi/dietpi-banner 0
+#echo -e "\e[38;5;82m--------------------------------------------------\e[0m"
+echo -e " \e[1mSupport:\e[0m \e[38;5;88mhttps://www.nexthardware.com/forum/pc-top-software/90075-gentooplayer-easy-install.html\e[0m"
+#echo -e "\e[38;5;82m--------------------------------------------------\e[0m"
+echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
+#echo -e " \e[1;38;5;88mleggi\e[0m \e[38;5;8mVisualizza informazioni IMPORTANTI post installazione\e[0m"
+echo -e " \e[1;38;5;88mhome\e[0m \e[38;5;8mReturn to this screen\e[0m"
+echo -e " \e[1;38;5;88mcpu-info\e[0m \e[38;5;8mView information about the CPU\e[0m"
+echo -e " \e[1;38;5;88mprocess-tool\e[0m \e[38;5;8mTo change affinity-schedular-nice-priority for a single application\e[0m"
+#echo -e " \e[1;38;5;88mirq-affinity\e[0m \e[38;5;8mTo move the system IRQ (usb, rete, etc.) a specific CPU\e[0m"
+echo -e " \e[1;38;5;88mrtirqconf\e[0m \e[38;5;8mTo configure the priority of system processes (usb, network etc.)\e[0m"
+echo -e " \e[1;38;5;88mcomandi-sistema\e[0m \e[38;5;8mVdisplays the list of COMMANDS related to the system and RT\e[0m"
+echo -e " \e[1;38;5;88mcomandi-player\e[0m \e[38;5;8mView the list of COMMANDS related to the player/server\e[0m"
+echo -e " \e[1;38;5;88malsa-up\e[0m \e[38;5;8mTo update alsa to the latest version\e[0m"
+echo -e " \e[1;38;5;88malsa-dw\e[0m \e[38;5;8mTo return to version 1.0.29 of alsa (only if alsa-up is used)\e[0m"
+echo -e " \e[1;38;5;88mselectkernel\e[0m \e[38;5;8mAllows the choice between RT and non-RT kernels, and various configurations\e[0m"
+echo -e " \e[1;38;5;88mselectkernel-botic\e[0m \e[38;5;8mAllows the choice between RT and non-RT kernels, and various configurations with driver botic\e[0m"
+echo -e " \e[1;38;5;88mselectkernel-botic-sabre\e[0m \e[38;5;8mAllows the choice between RT and non-RT kernels, and various configurations with driver botic-Sabre32\e[0m"
+echo -e " \e[1;38;5;88mgp-update\e[0m \e[38;5;8mTo update Overlay and Script, give this command every now and then\e[0m"
+echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
+##########################################################
