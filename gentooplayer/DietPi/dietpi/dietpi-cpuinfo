@@ -185,7 +185,7 @@
 		echo ''
 
 		#CPU scaling may bump up with script
-		G_DIETPI-NOTIFY 2 'CPU current frequency, may be affected by this script, due to the processing required to run it.\n - se non viene visualizzata la temperatura lanciare prima il comando: sensors-detect --auto'
+		G_DIETPI-NOTIFY 2 'CPU current frequency, may be affected by this script, due to the processing required to run it.\n - if the temperature is not displayed, first run the command: sensors-detect --auto'
 
 	}
 
