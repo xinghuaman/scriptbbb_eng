@@ -428,7 +428,7 @@ etc/init.d/squeezelite stop
 #/gentooplayer/script/nice.sh
 #}
 ################################
-function spegni {
+function shutd {
 shutdown -h now
 }
 ###############################
@@ -529,11 +529,11 @@ function system-commands {
 /gentooplayer/script/system-commands.sh
 }
 ######################
-function console-disattiva {
+function console-off {
 /gentooplayer/script/console.sh
 }
 ######################
-function ssh-disattiva {
+function ssh-off {
 rc-update delete sshd default
 }
 #############################

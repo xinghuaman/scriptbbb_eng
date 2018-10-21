@@ -49,8 +49,8 @@ function run_alsamixer() {
   clear
   echo
   cat <<-EOAMIX | less
-	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo. 
-	Premete il tasto "q" per uscire da questo visualizzatore).
+	(use the arrow keys and PgUp/PgDn to scroll the text. 
+	Press the "q" key to exit this viewer).
 
 	Verrà ora avviato "alsamixer", una interfaccia al "mixer" di ALSA.
 	
@@ -122,8 +122,8 @@ function select_outupt_dev() {
     if [ $myCard != "" ] && [ $myCard -lt 0 ]
     then
       cat <<-AUDIOHWM | less
-	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo.
-	Premete il tasto "q" per uscire da questo visualizzatore).
+	(use the arrow keys and PgUp/PgDn to scroll the text.
+	Press the "q" key to exit this viewer).
 	
 	Se il dispositivo di uscita audio che volete utilizzare non è stato
 	riconosciuto dal sistema, per prima cosa verificate che sia acceso e
@@ -171,7 +171,7 @@ function select_outupt_dev() {
 	e/o di MacOS). In tal caso c'è ben poco da fare... se non liberarvene
 	e sostituirli con altri che funzionino bene con Linux.
 
-	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo. Premete
+	(use the arrow keys and PgUp/PgDn to scroll the text. Premete
 	il tasto "q" per uscire da questo visualizzatore).
 	
 	AUDIOHWM
@@ -291,8 +291,8 @@ function select_sample_rate_range() {
   clear
   cat <<-EOSRR | less
   
-	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo. 
-	Premete il tasto "q" per uscire da questo visualizzatore).
+	(use the arrow keys and PgUp/PgDn to scroll the text. 
+	Press the "q" key to exit this viewer).
 	
 	Si dovrà ora procedere a selezionare le frequenze di campionamento dei
 	flussi audio digitali ("sample-rate") che sono direttamente supportate
@@ -351,8 +351,8 @@ function select_sample_rate_range() {
 	(almeno sul "player"), indicate correttamente gli effettivi limiti
 	minimo e massimo imposti dal vostro hardware.
 	
-	(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo.
-	Premete il tasto "q" per uscire da questo visualizzatore).
+	(use the arrow keys and PgUp/PgDn to scroll the text.
+	Press the "q" key to exit this viewer).
 	
 	EOSRR
     clear

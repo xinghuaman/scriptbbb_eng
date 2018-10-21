@@ -1,4 +1,4 @@
-######  IMPOSTARE QUI IL GOVERNOR  ###############################
+######  SET THE GOVERNOR HERE  ###############################
 #Cpu Governor | ondemand | powersave | performance | conservative
 CONFIG_CPU_GOVERNOR=performance
 CONFIG_CPU_USAGE_THROTTLE_UP=50

@@ -1,5 +1,5 @@
-(utilizzate i tasti freccia e PgUp/PgDn per far scorrere il testo.
-        Premete il tasto "q" per uscire da questo visualizzatore).
+(use the arrow keys and PgUp/PgDn to scroll the text.
+        Press the "q" key to exit this viewer).
 
 
 L i n u x    C P U F r e q
