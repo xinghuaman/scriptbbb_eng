@@ -42,28 +42,28 @@ echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
 fi
 
 if
-git clone https://github.com/antonellocaroli/scriptbbb.git; then
+git clone https://github.com/antonellocaroli/scriptbbb_eng.git; then
 echo -e "\n \e[38;5;154m[OK]\e[0m\n"
 else
 echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
 fi
 
 if
-mv scriptbbb/gentooplayer/bashrc /etc/bash/bashrc; then
+mv scriptbbb_eng/gentooplayer/bashrc /etc/bash/bashrc; then
 echo -e "\n \e[38;5;154m[OK]\e[0m\n"
 else
 echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
 fi
 
 if
-mv scriptbbb/gentooplayer/ /; then
+mv scriptbbb_eng/gentooplayer/ /; then
 echo -e "\n \e[38;5;154m[OK]\e[0m\n"
 else
 echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
 fi
 
 if
-rm -rf scriptbbb; then
+rm -rf scriptbbb_eng; then
 echo -e "\n \e[38;5;154m[OK]\e[0m\n"
 else
 echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
