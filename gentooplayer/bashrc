@@ -521,8 +521,8 @@ function mtu-test {
 /gentooplayer/DietPi/dietpi/func/dietpi-optimal_mtu
 }
 ######################
-function comandi-player {
-/gentooplayer/script/comandi-player.sh
+function players-commands {
+/gentooplayer/script/players-commands.sh
 }
 ######################
 function system-commands {
@@ -581,7 +581,7 @@ echo -e " \e[1;38;5;88mprocess-tool\e[0m \e[38;5;8mTo change affinity-schedular-
 #echo -e " \e[1;38;5;88mirq-affinity\e[0m \e[38;5;8mTo move the system IRQ (usb, rete, etc.) a specific CPU\e[0m"
 echo -e " \e[1;38;5;88mrtirqconf\e[0m \e[38;5;8mTo configure the priority of system processes (usb, network etc.)\e[0m"
 echo -e " \e[1;38;5;88msystem-commands\e[0m \e[38;5;8mDisplays the list of COMMANDS related to the system and RT\e[0m"
-echo -e " \e[1;38;5;88mcomandi-player\e[0m \e[38;5;8mView the list of COMMANDS related to the player/server\e[0m"
+echo -e " \e[1;38;5;88mplayers-commands\e[0m \e[38;5;8mView the list of COMMANDS related to the player/server\e[0m"
 echo -e " \e[1;38;5;88malsa-up\e[0m \e[38;5;8mTo update alsa to the latest version\e[0m"
 echo -e " \e[1;38;5;88malsa-dw\e[0m \e[38;5;8mTo return to version 1.0.29 of alsa (only if alsa-up is used)\e[0m"
 echo -e " \e[1;38;5;88mselectkernel\e[0m \e[38;5;8mAllows the choice between RT and non-RT kernels, and various configurations\e[0m"
