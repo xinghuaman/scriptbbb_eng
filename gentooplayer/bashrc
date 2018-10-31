@@ -589,4 +589,6 @@ echo -e " \e[1;38;5;88mselectkernel-botic\e[0m \e[38;5;8mAllows the choice betwe
 echo -e " \e[1;38;5;88mselectkernel-botic-sabre\e[0m \e[38;5;8mAllows the choice between RT and non-RT kernels, and various configurations with driver botic-Sabre32\e[0m"
 echo -e " \e[1;38;5;88mgp-update\e[0m \e[38;5;8mTo update Overlay and Script, give this command every now and then\e[0m"
 echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
+echo -e " \e[1;38;5;88mgp-menu\e[0m \e[38;5;8mMenu Viewer\e[0m"
+echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
 ##########################################################
