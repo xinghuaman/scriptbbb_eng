@@ -561,6 +561,10 @@ function alsa-dw {
 /gentooplayer/script/alsa-dw.sh
 }
 ######################
+function gp-menu {
+/gentooplayer/script/menu.sh
+}
+######################
 
 
 #mini
