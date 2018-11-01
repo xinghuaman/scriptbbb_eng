@@ -291,7 +291,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 15) selectk ;;
 16) menu ;;
 0) esci ;;
-*) echo -e "$Red Invalid choice...$Color_Off" && sleep 2 ; kernelbot ;;
+*) echo -e "$Red Invalid choice...$Color_Off" && sleep 2 ; kernelbot32 ;;
 esac
 }
 ######################### ST Kernel Botic############################################
@@ -860,27 +860,9 @@ echo -e ""
 case $oper in
 
 1) kernelst ;;
-2)
-  cp -vf uImage_rcucg uImage
-  echo -e "the system will restart with the new kernel"
-  echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
-3)
-  cp -vf uImage_1 uImage
-  echo -e "the system will restart with the new kernel"
-  echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
-4)
-  cp -vf uImage_2 uImage
-  echo -e "the system will restart with the new kernel"
-  echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
-5)
-  cp -vf uImage_standard uImage
-  echo -e "the system will restart with the new kernel"
-  echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
-6)
-  cp -vf uImage_rcunocgnopatch uImage
-  echo -e "the system will restart with the new kernel"
-  echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
-7) menu ;;
+2) kernelbot ;;
+3) kernelbot32 ;;
+4) menu ;;
 0) esci ;;
 *) echo -e "$Red Invalid choice...$Color_Off" && sleep 2 ; selectk ;;
 esac
