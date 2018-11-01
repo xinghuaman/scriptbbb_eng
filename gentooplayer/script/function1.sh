@@ -1,7 +1,7 @@
 ################# Select Kernel ################################################
 selectk(){
   clear
-  mount /dev/mmcblk0p1 2>/dev/null
+  mount /boot 2>/dev/null
   echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
   echo -e ""
   echo -e "        $color1"GentooPlayer"$color_off - $BBlue"Select Kernel"$Color_Off"
