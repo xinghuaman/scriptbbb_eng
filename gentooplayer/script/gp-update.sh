@@ -1,9 +1,11 @@
 #!/bin/bash
+. /gentooplayer/script/colors.sh
+
 function pausa() {
-  echo
+  echo -e "$Yellow"
   read -s -p 'Press "Enter" to continue... CTRL+C to end'
+  echo -e "$Color_Off"
   clear
-  echo
 }
 
 echo ""
