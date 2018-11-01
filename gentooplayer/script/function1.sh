@@ -39,7 +39,7 @@ case $oper in
 1)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-ST-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-ST-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-ST-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -57,7 +57,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 2)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_100-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_100-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_100-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -75,7 +75,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 3)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_250-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_250-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_250-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -93,7 +93,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 4)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_500-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_500-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_500-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -111,7 +111,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 5)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_1000-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_1000-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_1000-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -129,7 +129,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 6)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN-1000M1-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN-1000M1-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN-1000M1-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -147,7 +147,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 7)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_1000_rcu-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_1000_rcu-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_1000_rcu-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -165,7 +165,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 8)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-ST-rt8-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-ST-rt8-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-ST-rt8-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -183,7 +183,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 9)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_100-rt8-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_100-rt8-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_100-rt8-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -201,7 +201,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 10)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_250-rt8-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_250-rt8-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_250-rt8-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -219,7 +219,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 11)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_500-rt8-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_500-rt8-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_500-rt8-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -237,7 +237,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 12)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_1000-rt8-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_1000-rt8-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_1000-rt8-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -255,7 +255,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 13)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN-1000M1-rt8-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN-1000M1-rt8-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN-1000M1-rt8-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
@@ -273,7 +273,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 14)
 cat >> /boot/uEnv.txt <<'EOF'
 kernel_file=zImage-4.8.13-GentooPlayer-MIN_1000_rcu-rt8-botic7-rc3
-fdtfile=am335x-boneblack-botic-4.8.13-GentooPlayer-MIN_1000_rcu-rt8-botic7-rc3.dtb
+fdtfile=am335x-boneblack-botic-sabre32-4.8.13-GentooPlayer-MIN_1000_rcu-rt8-botic7-rc3.dtb
 
 loadzimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${kernel_file}
 loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdtaddr} ${fdtfile}
