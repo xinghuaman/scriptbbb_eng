@@ -1,8 +1,0 @@
-## Aggiornare alsa
-
-emerge --sync
-rm /etc/portage/package.mask/alsa-lib
-emerge --ask alsa-lib alsa-utils
-
-###aggiornare sistema
-
