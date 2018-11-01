@@ -236,6 +236,7 @@ echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
 13) menu ;;
 0) esci ;;
 *) echo -e "$Red Invalid choice...$Color_Off" && sleep 2 ; kernelst ;;
+esac
 }
 
 
@@ -267,10 +268,7 @@ read -p  " [0 - 4]:" oper
 echo -e ""
 case $oper in
 
-1)
-  cp -vf uImage_rcunocg uImage
-  echo -e "the system will restart with the new kernel"
-  echo -e "$Yellow Wait... $Color_Off" && sleep 5 ; reboot ;;
+1) kernelst ;;
 2)
   cp -vf uImage_rcucg uImage
   echo -e "the system will restart with the new kernel"
