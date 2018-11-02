@@ -521,7 +521,7 @@ rts(){
   echo -e " [2] Opens the RT-IRQ configuration file for system irq priorities"
   echo -e " [3] Add RTirq on startup"
   echo -e " [4] Remove RTirq from startup"
-  echo -e " [5] RT check - rtcheck will show some important information about your system"
+  echo -e " [5] RT Check - rtcheck will show some important information about your system"
   echo -e " [6] RT Monitor IRQ - For checking the realtime utilization you can start rtmonitorirq"
   echo -e " [7] RT Reset - reset all real time priority (irq and applications) to SCHED_OTHER"
   echo -e " [8] RT Status - show the status of irq and applications realtime priorities"
