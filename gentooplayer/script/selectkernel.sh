@@ -1,5 +1,6 @@
 ######################### ST Kernel Botic############################################
 kernelbot32(){
+  clear
   echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
   echo -e ""
   echo -e "        $color1"GentooPlayer"$color_off - $BBlue"Select Kernel Botic Sabre32"$Color_Off"
@@ -294,6 +295,7 @@ esac
 }
 ######################### ST Kernel Botic############################################
 kernelbot(){
+  clear
   echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
   echo -e ""
   echo -e "        $color1"GentooPlayer"$color_off - $BBlue"Select Kernel Botic"$Color_Off"
@@ -588,6 +590,7 @@ esac
 }
 ######################### ST Kernel ############################################
 kernelst(){
+  clear
   echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
   echo -e ""
   echo -e "        $color1"GentooPlayer"$color_off - $BBlue"Select Kernel Standard"$Color_Off"
