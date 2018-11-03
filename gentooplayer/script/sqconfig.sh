@@ -384,6 +384,9 @@ select_outupt_dev
 #select_sample_rate
 select_sample_rate_range
 #select_buffer
+###dsd###
+dsd='$dsd'
+###########
 
 echo -e "save in the squeezelite-R2 configuration file? y/n"
 read salvare
@@ -406,7 +409,19 @@ read salvare
 # SL_OPTS="-s 192.168.1.56 -o pulse -n $HOSTNAME -v"
 #for more information on the various configuration options visit http://marcoc1712.it/?page_id=139
 #
-SL_OPTS="-C 1 -D :u32be -o $myOutputDev -r $ratesRange -a 499:3::0 -n GentooPlayer-R2 -m 00:e0:4s:78:d1:46"
+#
+####### DSD ##############
+#remove the comment (#) in front of the line to be used as parameter dsd and comment (#) the others.
+#default is in use dop (without comment #)
+dsd='-D'         #dop
+#dsd='-D :u32be' #native
+#dsd='-D :u32le' #native
+#dsd='-D :u16be' #native
+#dsd='-D :u16le' #native
+#dsd='-D :u8'    #native
+######### ende DSD ############################
+#
+SL_OPTS="-C 1 $dsd -o $myOutputDev -r $ratesRange -a 499:3::0 -n GentooPlayer-R2 -m 00:e0:4s:78:d1:46"
 EOF
      /etc/init.d/squeezelite-R2 restart
     fi
@@ -433,7 +448,19 @@ read salvare
 # SL_OPTS="-s 192.168.1.56 -o pulse -n $HOSTNAME -v"
 #for more information on the various configuration options visit http://marcoc1712.it/?page_id=139
 #
-SL_OPTS="-C 1 -W -D :u32be -o $myOutputDev -r $ratesRange -a 499:3::0 -n GentooPlayer -m 00:f0:4c:68:d1:47"
+#
+####### DSD ##############
+#remove the comment (#) in front of the line to be used as parameter dsd and comment (#) the others.
+#default is in use dop (without comment #)
+dsd='-D'         #dop
+#dsd='-D :u32be' #native
+#dsd='-D :u32le' #native
+#dsd='-D :u16be' #native
+#dsd='-D :u16le' #native
+#dsd='-D :u8'    #native
+######### ende DSD ############################
+#
+SL_OPTS="-C 1 -W $dsd -o $myOutputDev -r $ratesRange -a 499:3::0 -n GentooPlayer -m 00:f0:4c:68:d1:47"
 EOF
      /etc/init.d/squeezelite restart
     fi
