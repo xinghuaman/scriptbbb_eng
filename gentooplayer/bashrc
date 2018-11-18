@@ -565,6 +565,10 @@ function gp-menu {
 /gentooplayer/script/menu.sh
 }
 ######################
+function ramdisktest {
+/gentooplayer/script/ramdisk1.sh
+}
+######################
 
 
 #mini
