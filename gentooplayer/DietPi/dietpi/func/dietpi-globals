@@ -121,7 +121,7 @@
 
 		# - Set locale for scripts, prevents incorrect scraping
 		export LANG=it_IT.UTF-8
-		export LC_ALL=it_IT.UTF-8
+		#export LC_ALL=it_IT.UTF-8
 
 		# - HIERARCHY system for G_DIETPI-NOTIFY 3
 		[[ $HIERARCHY ]] && export HIERARCHY=$((HIERARCHY+1)) || export HIERARCHY=0
@@ -1843,9 +1843,9 @@ $print_logfile_info
 
 	#Returns current CPU temp 'C
 	G_OBTAIN_CPU_TEMP(){
-		
+
 		# - PC - lm sensor - Lanciare prima il comando - sensors-detect --auto
-		# Per monitorare in tempo reale la cpu - watch -n 1 sensors 
+		# Per monitorare in tempo reale la cpu - watch -n 1 sensors
 		# vedi https://wiki.archlinux.org/index.php/Users_and_groups_(Italiano)
 		# sensors | grep 'Core 0' | awk '{print $3}' | cut -b2,3,4,5 | awk '{print $1*1000}' > /gentooplayer/DietPi/dietpi/.sensor
 		# - Array to store possible locations for temp read.
@@ -2253,5 +2253,3 @@ Please retry with valid parameter (\$4) or apply the setting manually:\n	$(sed -
 	#-----------------------------------------------------------------------------------
 
 }
-
-
