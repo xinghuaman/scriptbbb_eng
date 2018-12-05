@@ -166,6 +166,10 @@ mount -o bind /mnt/ramdisk10/ /run/
 #cp -a /sys/* /mnt/ramdisk13 2>/dev/null
 #mount -o bind /mnt/ramdisk13/ /sys/
 
+mount none -t tmpfs /mnt/ramdisk13 -o size=5M
+cp -a /usr/sbin/* /mnt/ramdisk13 2>/dev/null
+mount -o bind /mnt/ramdisk13/ /usr/sbin/
+
 mount none -t tmpfs /mnt/ramdisk14 -o size=2M
 cp -a /tmp/* /mnt/ramdisk14 2>/dev/null
 mount -o bind /mnt/ramdisk14/ /tmp/
