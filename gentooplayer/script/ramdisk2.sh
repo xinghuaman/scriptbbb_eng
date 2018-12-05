@@ -34,7 +34,7 @@ touch /var/log/file.txt
 
 
 if
-[ ! -f "/newuser/ld-linux-aarch64.so.1" ]; then
+[ ! -f "/newuser/ld-linux-armhf.so.3" ]; then
 echo -e "\n \e[38;5;154m[Copy necessary files]\e[0m\n"
 cp /lib/lib* /newuser/
 cp /lib/ld* /newuser/
