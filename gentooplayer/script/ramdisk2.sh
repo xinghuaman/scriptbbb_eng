@@ -166,6 +166,10 @@ mount -o bind /mnt/ramdisk10/ /run/
 #cp -a /sys/* /mnt/ramdisk13 2>/dev/null
 #mount -o bind /mnt/ramdisk13/ /sys/
 
+mount none -t tmpfs /mnt/ramdisk13 -o size=5M
+cp -a /usr/sbin/* /mnt/ramdisk13 2>/dev/null
+mount -o bind /mnt/ramdisk13/ /usr/sbin/
+
 #RoonBridge
 mount none -t tmpfs /mnt/ramdisk15 -o size=30M
 cp -a /RoonBridge/* /mnt/ramdisk15 2>/dev/null
