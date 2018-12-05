@@ -10,7 +10,7 @@ ramdisk(){
   echo -e ""
   echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
   echo ""
-  echo -e " [1] Ramdisk Reset - to use when you need to change the ramdisk mode"
+  echo -e " [1] Ramdisk Reset - to use when you need to change the ramdisk mode or changing the kernel"
   echo -e " [2] Ramdisk mode 1 - Squeezelite, Squeezelite-R2, Mpd, Networkaudiod"
   echo -e " [3] Ramdisk mode 2 - Squeezelite, Squeezelite-R2, Mpd, Networkaudiod, RoonBridge"
   echo -e " [4] Add the ramdisk at system startup"
