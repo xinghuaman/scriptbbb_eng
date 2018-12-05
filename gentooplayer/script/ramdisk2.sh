@@ -31,7 +31,7 @@ mkdir /mnt/ramdisk20 2>/dev/null
 rm -r /var/log/* 2>/dev/null
 touch /var/log/file.txt
 
-
+kern=$(uname -r)
 
 if
 [ ! -f "/newuser/ld-linux-armhf.so.3" ]; then
@@ -48,6 +48,8 @@ cp -r /lib/security /newuser/
 cp -r /lib/systemd /newuser/
 cp -r /lib/tc /newuser/
 cp -r /lib/udev /newuser/
+mkdir /newuser/modules
+cp -r /lib/modules/$kern /newuser/modules/
 else
 echo -e "\n \e[38;5;154m[OK]\e[0m\n"
 fi
@@ -119,7 +121,7 @@ mount none -t tmpfs /mnt/ramdisk2 -o size=7M
 cp -a /sbin/* /mnt/ramdisk2
 mount -o bind /mnt/ramdisk2/ /sbin/
 
-mount none -t tmpfs /mnt/ramdisk3 -o size=25M
+mount none -t tmpfs /mnt/ramdisk3 -o size=110M
 cp -a /newuser/* /mnt/ramdisk3
 mount -o bind /mnt/ramdisk3/ /lib/
 
