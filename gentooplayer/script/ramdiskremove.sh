@@ -1,6 +1,6 @@
 #!/bin/bash
 if
-umount /etc
+umount -l /etc
 umount /mnt/ramdisk1
 rm /etc/local.d/ramdisk.start; then
 echo -e "\n \e[38;5;154m[OK]\e[0m\n"
