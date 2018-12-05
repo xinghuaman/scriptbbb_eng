@@ -378,7 +378,7 @@ function select_sample_rate_range() {
   done
 }
 run_as_root
-setup_workdir
+#setup_workdir
 run_alsamixer
 select_outupt_dev
 #select_sample_rate
