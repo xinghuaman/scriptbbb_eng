@@ -4,6 +4,7 @@
 . /gentooplayer/script/function.sh
 . /gentooplayer/script/function1.sh
 . /gentooplayer/script/function2.sh
+. /gentooplayer/script/function3.sh  #Ramdisk
 ################################################################################
 
 ################################################################################
@@ -763,7 +764,8 @@ echo -e " [4] Synchronize date and time"
 echo -e " [5] Update Overlay and Script"
 echo -e " [6] $Cyan"Update system"$Color_Off"
 echo -e " [7] Wizard configurations, Mpd, squeezelite, squeezelite-R2"
-echo -e " [8] $BRed"Turn off the system"$Color_Off"
+echo -e " [8] Ramdisk - System in ram"
+echo -e " [9] $BRed"Turn off the system"$Color_Off"
 echo -e " [0] $BBlue"Exit"$Color_Off"
 echo -e ""
 echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
@@ -775,7 +777,7 @@ opzioni(){
 echo -e "$Green"Choose your operation:"$Color_Off"
 echo -e ""
 local choice
-read -p " [0 - 8] " choice
+read -p " [0 - 9] " choice
 case $choice in
 1) players ;;
 2) systemm ;;
@@ -812,7 +814,8 @@ revdep-rebuild ;
 echo
 echo -e "$Yellow press a key to continue $Color_Off" ; read -n1 ;;
 7) sqconfig ;;
-8) shutd ;;
+8) ramdisk ;;
+9) shutd ;;
 0) esci ;;
 *) echo -e "$Red Invalid choice...$Color_Off" && sleep 2 ;;
 esac
