@@ -183,26 +183,26 @@ cp -a /usr/share/figlet/* /mnt/ramdisk20
 mount -o bind /mnt/ramdisk20/ /usr/share/figlet/
 
 
-echo -e "Do you want to use squeezelite-R2? y/n"
-read use
-	if [ "$use" = "y" ]; then
-    /etc/init.d/squeezelite-R2 restart
-    fi
+#echo -e "Do you want to use squeezelite-R2? y/n"
+#read use
+#	if [ "$use" = "y" ]; then
+#    /etc/init.d/squeezelite-R2 restart
+#    fi#
 
-echo -e "Do you want to use squeezelite? y/n"
-read use
-    if [ "$use" = "y" ]; then
-    /etc/init.d/squeezelite restart
-    fi
+#echo -e "Do you want to use squeezelite? y/n"
+#read use
+#    if [ "$use" = "y" ]; then
+#    /etc/init.d/squeezelite restart
+#    fi#
 
-echo -e "Do you want to use networkaudiod? y/n"
-read use
-	if [ "$use" = "y" ]; then
-    /etc/init.d/networkaudiod restart
-    fi
+#echo -e "Do you want to use networkaudiod? y/n"
+#read use
+#	if [ "$use" = "y" ]; then
+#    /etc/init.d/networkaudiod restart
+#    fi#
 
-echo -e "Do you want to use Mpd? y/n"
-read use
-	if [ "$use" = "y" ]; then
-    /etc/init.d/mpd restart
-    fi
+#echo -e "Do you want to use Mpd? y/n"
+#read use
+#	if [ "$use" = "y" ]; then
+#    /etc/init.d/mpd restart
+#    fi
