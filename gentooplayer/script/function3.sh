@@ -64,6 +64,6 @@ echo -e "$Yellow press a key to continue $Color_Off" ; read -n1 ; ramdisk ;;
 reboot ;;
 7) menu ;;
 0) esci ;;
-*) echo -e "$Red Invalid choice...$Color_Off" && sleep 2 ; mountf ;;
+*) echo -e "$Red Invalid choice...$Color_Off" && sleep 2 ; ramdisk ;;
 esac
 }
