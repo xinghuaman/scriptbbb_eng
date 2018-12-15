@@ -1,5 +1,7 @@
 #!/bin/bash
 if
+umount -l /etc 2>/dev/null
+umount /mnt/ramdisk1 2>/dev/null
 cat > /etc/local.d/ramdisk.start <<EOF
 #!/bin/bash
 #sleep 5
