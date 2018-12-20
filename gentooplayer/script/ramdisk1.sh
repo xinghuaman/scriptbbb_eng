@@ -30,6 +30,7 @@ mkdir /mnt/ramdisk20 2>/dev/null
 
 rm -r /var/log/* 2>/dev/null
 touch /var/log/file.txt
+rm -r /newuser/*
 
 kern=$(uname -r)
 
