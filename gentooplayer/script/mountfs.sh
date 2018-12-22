@@ -336,10 +336,10 @@ ntf(){
   echo ""
   echo -e "\e[38;5;82m--------------------------------------------------\e[0m"
   echo ""
-  echo -e "Partition \e[38;5;82mext4\e[0m present on the system:"
+  echo -e "Partition \e[38;5;82mntfs\e[0m present on the system:"
   echo ""
   echo -e "NAME SIZE FSTYPE MOUNTPOINT"
-  lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT | grep ext4 | sed 's/\├─//g' | sed 's/\└─//g'
+  lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT | grep ntfs | sed 's/\├─//g' | sed 's/\└─//g'
   echo ""
   echo -e "\e[38;5;82m--------------------------------------------------\e[0m"
   echo ""
