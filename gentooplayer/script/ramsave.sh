@@ -9,7 +9,7 @@ mkdir /ramsave/opt 2>/dev/null
 mkdir /ramsave/etc 2>/dev/null
 mkdir /ramsave/root 2>/dev/null
 mkdir /ramsave/RoonBridge 2>/dev/null
-mkdir /ramsave/RoonServer 2>/dev/null
+
 
 ####rsync ram to save
 #rsync -a /etc/hqplayer/hqplayerd.xml /ramsave/hqplayerd.xml #haplayerd
@@ -62,12 +62,6 @@ mount none -t tmpfs /mnt/ramdisk12 -o size="$dgentooplayer"K
 rsync -a /gentooplayer/ /mnt/ramdisk12 2>/dev/null
 mount -o bind /mnt/ramdisk12/ /gentooplayer/
 
-var=$(du -sk /var | awk '{print $1}')
-dvar=$((var + 30000))
-mount none -t tmpfs /mnt/ramdisk7 -o size="$dvar"K
-rsync -a /var/ /mnt/ramdisk7
-mount -o bind /mnt/ramdisk7/ /var/
-
 root=$(du -sk /root | awk '{print $1}')
 droot=$((root + 50000))
 mount none -t tmpfs /mnt/ramdisk21 -o size="$droot"K
@@ -88,16 +82,16 @@ mount -o bind /mnt/ramdisk13/ /RoonBridge/ ;
 
 echo -e "\n \e[38;5;154mwait...\e[0m\n"
 ###roons
-mount -l | grep "none on /RoonServer type tmpfs" &&
-rsync -a /RoonServer/ /ramsave/RoonServer/ &&
-umount -l /RoonServer &&
-umount /mnt/ramdisk18 &&
-rsync -a /ramsave/RoonServer/ /RoonServer/ &&
-roons=$(du -sk /RoonServer | awk '{print $1}') &&
-droons=$((roons + 10000)) &&
-mount none -t tmpfs /mnt/ramdisk18 -o size="$droons"K &&
-rsync -a /RoonServer/ /mnt/ramdisk18 &&
-mount -o bind /mnt/ramdisk18/ /RoonServer/ ;
+mount -l | grep "none on /var type tmpfs" &&
+rsync -a /var/ /ramsave/var/ &&
+umount -l /var &&
+umount /mnt/ramdisk7 &&
+rsync -a /ramsave/var/ /var/ &&
+var=$(du -sk /var | awk '{print $1}') &&
+dvar=$((var + 30000)) &&
+mount none -t tmpfs /mnt/ramdisk7 -o size="$droons"K &&
+rsync -a /var/ /mnt/ramdisk7 &&
+mount -o bind /mnt/ramdisk7/ /var/ ;
 
 ####opt
 mount -l | grep "none on /opt type tmpfs" &&
@@ -122,3 +116,5 @@ grep -r "start.sh -f /var/log/roon.log" process.txt && /etc/init.d/roonbridge re
 grep -r "start.sh -f /var/log/roonserver.log" process.txt && /etc/init.d/roonserver restart
 grep -r "logitechmediaserver" process.txt && /etc/init.d/logitechmediaserver restart
 grep -r "mpd /etc/mpd.conf" process.txt && /etc/init.d/mpd restart
+
+sync && echo 3 > /proc/sys/vm/drop_caches
