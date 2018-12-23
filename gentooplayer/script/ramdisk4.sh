@@ -1,5 +1,5 @@
 #!/bin/bash
-
+sync && echo 3 > /proc/sys/vm/drop_caches
 ####nad - squeezelite-R2
 
 mkdir /newuser 2>/dev/null
