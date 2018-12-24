@@ -3,16 +3,16 @@ nano /etc/fstab
 rc-update delete swap boot
 nano /etc/portage/make.conf
 
-rm -rv /tmp
-rm -rv /usr/portage/distfiles
-rm -rv /usr/src
-rm -rv /var/cache/edb/dep
-rm -rv /var/cache/genkernel
-rm -rv /var/cache/portage/distfiles
-rm -rv /var/empty
-rm -rv /var/run
-rm -rv /var/state
-rm -rv /var/tmp
+rm -rv /tmp/*
+rm -rv /usr/portage/distfiles/*
+rm -rv /usr/src/*
+rm -rv /var/cache/edb/dep/*
+rm -rv /var/cache/genkernel/*
+rm -rv /var/cache/portage/distfiles/*
+rm -rv /var/empty/*
+rm -rv /var/run/*
+rm -rv /var/state/*
+rm -rv /var/tmp/*
 
 rm -v /etc/*-
 rm -v /etc/*.old
