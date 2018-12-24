@@ -11,6 +11,7 @@ echo -e "\e[1;38;5;88maudio\e[0m \e[38;5;8mView the current status of the Sound 
 echo -e "\e[1;38;5;88mipstatic\e[0m \e[38;5;8mOpens the static IP configuration wizard\e[0m"
 echo -e "\e[1;38;5;88mmountfs\e[0m \e[38;5;8mTo mount HD and LAN or NAS shares\e[0m"
 echo -e "\e[1;38;5;88mgp-update\e[0m \e[38;5;8mTo update Overlay and Script, dare questo comando di tanto in tanto\e[0m"
+echo -e " \e[1;38;5;88mramsystem\e[0m \e[38;5;8mCopyng system to RAM\e[0m"
 #echo -e "\e[1;38;5;88mtrimadd\e[0m \e[38;5;8mTo automate the daily trim to be activated only for SSD\e[0m"
 
 echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"

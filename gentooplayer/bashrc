@@ -565,8 +565,8 @@ function gp-menu {
 /gentooplayer/script/menu.sh
 }
 ######################
-function ramdisktest {
-/gentooplayer/script/ramdisk1.sh
+function ramsystem {
+/gentooplayer/script/ramsystem.sh
 }
 ######################
 
@@ -593,6 +593,7 @@ echo -e " \e[1;38;5;88mplayers-commands\e[0m \e[38;5;8mView the list of COMMANDS
 echo -e " \e[1;38;5;88malsa-up\e[0m \e[38;5;8mUpdate alsa to the latest version\e[0m"
 echo -e " \e[1;38;5;88malsa-dw\e[0m \e[38;5;8mInstall alsa version 1.0.29\e[0m"
 echo -e " \e[1;38;5;88mselectkernel\e[0m \e[38;5;8mAllows the choice between RT and non-RT kernels, and various configurations (standard BBB, Botic, BoticSabre32)\e[0m"
+echo -e " \e[1;38;5;88mramsystem\e[0m \e[38;5;8mCopyng system to RAM\e[0m"
 #echo -e " \e[1;38;5;88mselectkernel-botic\e[0m \e[38;5;8mAllows the choice between RT and non-RT kernels, and various configurations with driver botic\e[0m"
 #echo -e " \e[1;38;5;88mselectkernel-botic-sabre\e[0m \e[38;5;8mAllows the choice between RT and non-RT kernels, and various configurations with driver botic-Sabre32\e[0m"
 echo -e " \e[1;38;5;88mgp-update\e[0m \e[38;5;8mTo update Overlay and Script, give this command every now and then\e[0m"
