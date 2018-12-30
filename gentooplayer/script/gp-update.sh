@@ -14,15 +14,19 @@ echo -e "Local overlay and gentooplayer scripts will be updated"
 
 pausa
 
-if
-rm -rf /usr/local/portage/antonellocaroli; then
-echo -e "\n \e[38;5;154m[OK]\e[0m\n"
-else
-echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
-fi
+cd /tmp
+
 
 if
 git clone https://github.com/antonellocaroli/gentoo_overlaybbb.git; then
+echo -e "\n \e[38;5;154m[OK]\e[0m\n"
+else
+echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
+exit 0
+fi
+
+if
+rm -rf /usr/local/portage/antonellocaroli; then
 echo -e "\n \e[38;5;154m[OK]\e[0m\n"
 else
 echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
@@ -36,15 +40,17 @@ echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
 fi
 
 
-if
-rm -rf /gentooplayer; then
-echo -e "\n \e[38;5;154m[OK]\e[0m\n"
-else
-echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
-fi
 
 if
 git clone https://github.com/antonellocaroli/scriptbbb_eng.git; then
+echo -e "\n \e[38;5;154m[OK]\e[0m\n"
+else
+echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
+exit 0
+fi
+
+if
+rm -rf /gentooplayer; then
 echo -e "\n \e[38;5;154m[OK]\e[0m\n"
 else
 echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
