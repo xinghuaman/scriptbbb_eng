@@ -1,6 +1,6 @@
 #!/bin/bash
 ###create dirsave
-rm -r /ramsave/*
+rm -r /ramsave/* 2>/dev/null
 mkdir /ramsave 2>/dev/null
 #mkdir /ramsave/local.d 2>/dev/null
 mkdir /ramsave/gentooplayer 2>/dev/null
