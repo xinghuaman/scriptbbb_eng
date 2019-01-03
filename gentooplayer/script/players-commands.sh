@@ -40,21 +40,10 @@ echo -e "\e[1;38;5;88mroonrestart\e[0m \e[38;5;8mRestart roon-bridge\e[0m"
 echo -e "\e[1;38;5;88mroonstop\e[0m \e[38;5;8mStop roon-bridge\e[0m"
 echo -e "\e[1;38;5;88mroonadd\e[0m \e[38;5;8mAdds roon-bridge to the system boot\e[0m"
 echo -e "\e[1;38;5;88mroonremove\e[0m \e[38;5;8mRemoves roon-bridge from starting the system\e[0m"
-#LMS
-#echo -e "\e[38;5;82mLogitechMediaServer\e[0m"
-#echo -e "\e[1;38;5;88mlmsadd\e[0m \e[38;5;8mAdds LogitechMediaServer to the system boot\e[0m"
-#echo -e "\e[1;38;5;88mlmsremove\e[0m \e[38;5;8mRemoves LogitechMediaServer from starting the system\e[0m"
-#echo -e "\e[1;38;5;88mlmsrestart\e[0m \e[38;5;8mRestart LMS\e[0m"
-#echo -e "\e[1;38;5;88mlmsstop\e[0m \e[38;5;8mStop LMS\e[0m"
-#RoonServer
-#echo -e "\e[38;5;82mRoonServer\e[0m"
-#echo -e "\e[1;38;5;88mroonsadd\e[0m \e[38;5;8mAdds RoonCoreServer to the system boot\e[0m"
-#echo -e "\e[1;38;5;88mroonsremove\e[0m \e[38;5;8mRemoves RoonCoreServer from starting the system\e[0m"
-#echo -e "\e[1;38;5;88mroonsrestart\e[0m \e[38;5;8mRestart RoonCoreServer\e[0m"
-#echo -e "\e[1;38;5;88mroonserverstop\e[0m \e[38;5;8mStop RoonCoreServer\e[0m"#
-
-#####altro
-#echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
-#echo -e "\e[1;38;5;88mplayerstop\e[0m \e[38;5;8mStop all the players\e[0m"
-#echo -e "\e[1;38;5;88mserverstopp\e[0m \e[38;5;8mStoppa LMS e RoonServer\e[0m"
-#echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
+#upmpdcli
+echo -e "\e[38;5;82mUpmpdcli\e[0m"
+echo -e "\e[1;38;5;88mupmsadd\e[0m \e[38;5;8mAdds Upmpdcli to the system boot\e[0m"
+echo -e "\e[1;38;5;88mupmremove\e[0m \e[38;5;8mRemoves Upmpdcli from starting the system\e[0m"
+echo -e "\e[1;38;5;88mupmrestart\e[0m \e[38;5;8mRestart Upmpdcli\e[0m"
+echo -e "\e[1;38;5;88mupmstop\e[0m \e[38;5;8mStop Upmpdcli\e[0m"
+echo -e "\e[1;38;5;88mupmc\e[0m \e[38;5;8mIt opens the configuration file of Upmpdcli to be edited, when it closes it will restart the Upmpdcli\e[0m"
