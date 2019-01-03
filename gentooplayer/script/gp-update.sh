@@ -16,6 +16,14 @@ pausa
 
 cd /tmp
 
+if
+mount -l | grep "none on /gentooplayer type tmpfs" 1>/dev/null && echo -e "\e[38;5;82mRamSystem you can not use gp-update\e[0m"; then
+echo -e "\n \e[38;5;197m[FAILED]\e[0m\n"
+exit 0
+else
+echo -e "\n \e[38;5;154m[OK]\e[0m\n"
+fi
+
 
 if
 git clone https://github.com/antonellocaroli/gentoo_overlaybbb.git; then
