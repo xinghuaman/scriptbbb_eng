@@ -565,14 +565,14 @@ mixer_type   "none"
 #buffer_before_play  "25%"
 
 audio_buffer_size  "16384"
-buffer_before_play  "25%"
+#buffer_before_play  "25%"
 
 #buffer_time     "2097152"
 #period_time     "524288"
 
 #samplerate_converter	"Medium Sinc Interpolator"
 #samplerate_converter            "soxr very high"
-id3v1_encoding   "UTF-8"
+#id3v1_encoding   "UTF-8"
 filesystem_charset  "UTF-8"
 
 EOF
