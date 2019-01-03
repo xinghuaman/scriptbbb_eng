@@ -490,6 +490,7 @@ bind_to_address		"any"
 
 input {
         plugin "curl"
+        enabled	"yes"
 #       proxy "proxy.isp.com:8080"
 #       proxy_user "user"
 #       proxy_password "password"
