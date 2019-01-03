@@ -162,7 +162,7 @@ function sqconfig {
 #function kernelinstall {
 #/gentooplayer/script/kernelinstall.sh
 #}
-#################################
+################################
 #function grubconf {
 #/gentooplayer/script/grubconf.sh
 #}
@@ -172,7 +172,7 @@ function sqconfig {
 #/etc/init.d/rtirq restart
 #rtapp
 #}
-####################################
+#####################################
 function rtirqc {
 nano /etc/conf.d/rtirq
 /etc/init.d/rtirq restart
@@ -279,22 +279,22 @@ etc/init.d/squeezelite stop
 #/etc/init.d/logitechmediaserver stop
 #/etc/init.d/roonserver stop
 #}
-############################################
-function testsetting {
-/gentooplayer/script/testsetting.sh
-}
-##############################
-function testsetting1 {
-/gentooplayer/script/testsetting1.sh
-}
-##############################
-function normalsetting {
-/gentooplayer/script/normalsetting.sh
-}
-##############################
-function normalsetting1 {
-/gentooplayer/script/normalsetting1.sh
-}
+###########################################
+#function testsetting {
+#/gentooplayer/script/testsetting.sh
+#}
+###############################
+#function testsetting1 {
+#/gentooplayer/script/testsetting1.sh
+#}
+###############################
+#function normalsetting {
+#/gentooplayer/script/normalsetting.sh
+#}
+###############################
+#function normalsetting1 {
+#/gentooplayer/script/normalsetting1.sh
+#}
 ###############################
 #function xfceinstall {
 #/gentooplayer/script/xfceinstall.sh
@@ -327,11 +327,11 @@ shutdown -h now
 function mountfs {
 /gentooplayer/script/mountfs.sh
 }
-######################
-function cmdset {
-/gentooplayer/script/cmdset.sh
-}
-######################
+#######################
+#function cmdset {
+#/gentooplayer/script/cmdset.sh
+#}
+#######################
 function swappoff {
 rc-update delete swap boot
 }
@@ -342,6 +342,14 @@ rc-update delete swap boot
 #######################
 function selectkernel {
 /gentooplayer/script/selectkernel.sh
+}
+######################
+function selectkernel-botic {
+/gentooplayer/script/selectkernel_botic.sh
+}
+######################
+function selectkernel-botic-sabre {
+/gentooplayer/script/selectkernel_botic_sabre32.sh
 }
 #######################
 #function trimadd {
@@ -424,11 +432,11 @@ rc-update delete sshd default
 #function buffer {
 #/gentooplayer/script/buffer.sh
 #}
-########################
+#######################
 #function confset {
 #/gentooplayer/script/confset.sh
 #}
-#######################
+########################
 #function twk {
 #/gentooplayer/script/twk.sh
 #}
@@ -443,5 +451,34 @@ function alsa-up {
 ######################
 function alsa-dw {
 /gentooplayer/script/alsa-dw.sh
+}
+######################
+function gp-menu {
+/gentooplayer/script/menu.sh
+}
+######################
+function ramsystem {
+/gentooplayer/script/ramsystem.sh
+}
+######################
+function upmrestart {
+/etc/init.d/upmpdcli restart
+}
+######################
+function upmstop {
+/etc/init.d/upmpdcli stop
+}
+######################
+function upmadd {
+rc-update add upmpdcli default
+}
+######################
+function upmremove {
+rc-update delete upmpdcli default
+}
+######################
+function upmc {
+nano /etc/upmpdcli.conf
+/etc/init.d/upmpdcli restart
 }
 ######################
