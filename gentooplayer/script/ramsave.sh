@@ -20,7 +20,6 @@ mkdir /ramsave/RoonBridge 2>/dev/null
 echo -e "\n \e[38;5;154mwait...\e[0m\n"
 rsync -a /gentooplayer/ /ramsave/gentooplayer/ #gentooplayer
 rsync -a /etc/ /ramsave/etc/ #etc
-rsync -a /var/ /ramsave/var/ #var
 rsync -a /root/ /ramsave/root/ #root
 
 ####umount
@@ -29,9 +28,6 @@ umount /mnt/ramdisk1
 
 umount -l /gentooplayer
 umount /mnt/ramdisk12
-
-umount -l /var
-umount /mnt/ramdisk7
 
 umount -l /root
 umount /mnt/ramdisk21
@@ -45,7 +41,6 @@ umount /mnt/ramdisk21
 echo -e "\n \e[38;5;154mwait...\e[0m\n"
 rsync -a /ramsave/gentooplayer/ /gentooplayer/ # gentooplayer
 rsync -a /ramsave/etc/ /etc/ #etc
-rsync -a /ramsave/var/ /var/  #var
 rsync -a /ramsave/root/ /root/ #root
 
 echo -e "\n \e[38;5;154mwait...\e[0m\n"
