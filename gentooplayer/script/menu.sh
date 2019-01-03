@@ -421,14 +421,15 @@ players(){
   echo -e " [3] Networkaudiod"
   echo -e " [4] Mpd"
   echo -e " [5] RoonBridge"
-  echo -e " [6] $BBlue"Main Menu"$Color_Off"
+  echo -e " [6] Upmpdcli"
+  echo -e " [7] $BBlue"Main Menu"$Color_Off"
   echo -e " [0] $BBlue"Exit"$Color_Off"
   echo -e ""
   echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
 echo -e ""
 echo -e "$Green"Choose your operation:"$Color_Off"
 echo ""
-read -p  " [0 - 6]:" play
+read -p  " [0 - 7]:" play
 echo -e ""
 case $play in
 
@@ -437,7 +438,8 @@ case $play in
 3) nad ;;
 4) mp ;;
 5) roonb ;;
-6) menu ;;
+6) upmp ;;
+7) menu ;;
 0) esci ;;
 *) echo -e "$Red Invalid choice...$Color_Off" && sleep 2 ; players ;;
 esac
