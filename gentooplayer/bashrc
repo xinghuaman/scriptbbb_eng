@@ -569,11 +569,33 @@ function ramsystem {
 /gentooplayer/script/ramsystem.sh
 }
 ######################
+function upmrestart {
+/etc/init.d/upmpdcli restart
+}
+######################
+function upmstop {
+/etc/init.d/upmpdcli stop
+}
+######################
+function upmadd {
+rc-update add upmpdcli default
+}
+######################
+function upmremove {
+rc-update delete upmpdcli default
+}
+######################
+function upmc {
+nano /etc/upmpdcli.conf
+/etc/init.d/upmpdcli restart
+}
+######################
 
 
 #mini
 clear
 figlet -f big "GentooPlayer"
+mount -l | grep "none on /gentooplayer type tmpfs" 1>/dev/null && echo -e " \e[38;5;82mRamSystem\e[0m";
 tmp=$(uname -r)
 echo -e " \e[38;5;8m$tmp\e[0m"
 /gentooplayer/DietPi/dietpi/func/obtain_network_details
