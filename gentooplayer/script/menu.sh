@@ -405,6 +405,64 @@ case $oper in
 esac
 }
 
+upmp(){
+  clear
+  echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
+  echo -e ""
+  echo -e "        $color1"GentooPlayer"$color_off - $BBlue"Upmpdcli"$Color_Off"
+  echo -e ""
+  echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
+  echo -e " [1] $BGreen"Restart"$Color_Off"
+  echo -e " [2] $BRed"Stop"$Color_Off"
+  echo -e " [3] $BGreen"Add to the system boot"$Color_Off"
+  echo -e " [4] $BRed"Remove from starting the system"$Color_Off"
+  echo -e " [5] $BRed"opens the configuration"$Color_Off"
+  echo -e " [6] $BGreen"Update Upmpdcli"$Color_Off"
+  echo -e " [7] $BRed"Remove Upmpdcli from the system"$Color_Off"
+  echo -e " [8] $BBlue"Players Menu"$Color_Off"
+  echo -e " [9] $BBlue"Main Menu"$Color_Off"
+  echo -e " [0] $BBlue"Exit"$Color_Off"
+  echo -e ""
+  echo -e " \e[38;5;154m────────────────────────────────────────────\e[0m"
+echo -e ""
+echo -e "$Green"Choose your operation:"$Color_Off"
+echo ""
+read -p  " [0 - 9]:" oper
+echo -e ""
+case $oper in
+
+1) upmrestart ; upmp ;;
+2) upmstop ; upmp ;;
+3) upmsadd ; upmp ;;
+4) upmremove ; upmp ;;
+5) upmc ; upmp ;;
+6)
+  echo -e "$Green Update Upmpdcli? $Color_Off"
+  echo ""
+  echo -e "$Yellow press a key to continue $Color_Off" ; read -n1
+  echo "Wait..."
+  /etc/init.d/ntp-client restart
+  echo "Wait.."
+  sleep 5
+  emerge --ask upmpdcli ;
+  echo
+  echo -e "$Yellow press a key to continue $Color_Off" ; read -n1 ; upmp ;;
+7)
+  echo -e "$Red Remove upmpdcli from the system? $Color_Off"
+  echo ""
+  echo -e "$Yellow press a key to continue $Color_Off" ; read -n1
+  echo "Wait..."
+  emerge -C upmpdcli
+  emerge --depclean
+  echo
+  echo -e "$Yellow press a key to continue $Color_Off" ; read -n1 ; upmp ;;
+8) players ;;
+9) menu ;;
+0) esci ;;
+*) echo -e "$Red Invalid choice...$Color_Off" && sleep 2 ; upmp ;;
+esac
+}
+
 
 ################################################################################
 
