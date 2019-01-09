@@ -8,6 +8,11 @@ function pausa() {
   clear
 }
 
+echo
+echo
+echo -e "\n \e[38;5;197mthis version is no longer updated ....\e[0m\n"
+echo -e "\n \e[38;5;197mit is recommended to download a new image of the system\e[0m\n"
+echo -e "\n \e[38;5;88mhttps://www.nexthardware.com/forum/pc-top-software/90075-gentooplayer-easy-install-30.html#post990055\e[0m"
 echo ""
 echo ""
 echo -e "Local overlay and gentooplayer scripts will be updated"
